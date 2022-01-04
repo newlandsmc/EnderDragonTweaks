@@ -1,10 +1,13 @@
 package com.semivanilla.enderdragontweaks.task;
 
+import com.google.common.collect.Sets;
 import com.semivanilla.enderdragontweaks.config.Config;
 import com.semivanilla.enderdragontweaks.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
 import org.bukkit.Bukkit;
@@ -12,8 +15,13 @@ import org.bukkit.World;
 import org.bukkit.boss.DragonBattle;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class DragonSpawnTask extends BukkitRunnable {
 
@@ -26,10 +34,8 @@ public class DragonSpawnTask extends BukkitRunnable {
     }
     
     public void startTask() {
-		if (world.getEnvironment() != World.Environment.THE_END) return; // Don't start if this isn't the end
+		if (world.getEnvironment() != World.Environment.THE_END) return;
     	runTaskLater(plugin, Config.respawnDelay);
-		if (!Config.enderDragonKilled.isBlank())
-			Bukkit.broadcast(Util.parseMiniMessage(Config.enderDragonKilled, null));
     }
     
 	@Override
