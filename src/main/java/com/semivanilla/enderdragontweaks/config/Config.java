@@ -120,10 +120,12 @@ public class Config {
     public static String enderDragonKilled = "<red>The ender dragon was killed by <players>.";
     public static String enderDragonSpawned = "<yellow>The ender dragon has been respawned.";
     public static long respawnDelay = 300;
+    public static int expToSpread = 0;
     private static void settings() {
         enderDragonKilled = getString("enderdragon.killed", enderDragonKilled);
         enderDragonSpawned = getString("enderdragon.spawned", enderDragonSpawned);
         respawnDelay = getLong("enderdragon.respawn-delay", respawnDelay);
+        expToSpread = getInt("enderdragon.exp-to-drop", expToSpread);
     }
 
 }
