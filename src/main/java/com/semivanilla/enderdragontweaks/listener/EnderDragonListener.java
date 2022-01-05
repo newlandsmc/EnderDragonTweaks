@@ -12,9 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
-import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,7 +20,6 @@ import org.bukkit.World;
 import org.bukkit.boss.DragonBattle;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -102,7 +99,6 @@ public class EnderDragonListener implements Listener {
         }
         Collection<ItemStack> loot = lootTable.populateLoot(new Random(),
                 new LootContext.Builder(endPortalLocation).lootedEntity(dragonEntity).build());
-        Bukkit.getLogger().info(playerNames.size() + " size");
         List<ItemStack> items = loot.stream().limit(playerNames.size()).toList();
         for (ItemStack itemStack : items) {
             double randI = ThreadLocalRandom.current().nextDouble(0, 26);
