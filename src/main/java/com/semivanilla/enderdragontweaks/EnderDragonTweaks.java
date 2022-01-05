@@ -2,7 +2,6 @@ package com.semivanilla.enderdragontweaks;
 
 import com.semivanilla.enderdragontweaks.config.Config;
 import com.semivanilla.enderdragontweaks.listener.EnderDragonListener;
-import com.semivanilla.enderdragontweaks.task.DragonSpawnTask;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
