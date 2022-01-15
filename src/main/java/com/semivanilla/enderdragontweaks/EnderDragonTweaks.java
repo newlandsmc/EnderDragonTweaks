@@ -1,5 +1,6 @@
 package com.semivanilla.enderdragontweaks;
 
+import com.semivanilla.enderdragontweaks.command.DragonTweaksCommand;
 import com.semivanilla.enderdragontweaks.config.Config;
 import com.semivanilla.enderdragontweaks.listener.EnderDragonListener;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ public class EnderDragonTweaks extends JavaPlugin {
         Config.init(instance);
 
         registerListener(new EnderDragonListener(instance));
+        getCommand("enderdragontweaks").setExecutor(new DragonTweaksCommand());
     }
 
     @Override

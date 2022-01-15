@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import java.io.ByteArrayOutputStream
 
 plugins {
     id("java")
@@ -63,7 +64,24 @@ tasks {
 bukkit {
     name = rootProject.name
     main = "$group.${rootProject.name}"
+    version = "${rootProject.version}-${gitCommit()}"
     apiVersion = "1.18"
     website = "https://github.com/SemiVanilla-MC/${rootProject.name}"
     authors = listOf("destro174")
+    commands {
+        create("enderdragontweaks") {
+            description = "Base command for the enderdragontweaks plugin."
+            usage = "/enderdragontweaks"
+            permission = "enderdragontweaks.command"
+        }
+    }
+}
+
+fun gitCommit(): String {
+    val os = ByteArrayOutputStream()
+    project.exec {
+        commandLine = "git rev-parse --short HEAD".split(" ")
+        standardOutput = os
+    }
+    return String(os.toByteArray()).trim()
 }

@@ -1,9 +1,11 @@
 package com.semivanilla.enderdragontweaks.util;
 
+import com.semivanilla.enderdragontweaks.config.Config;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 import net.kyori.adventure.text.minimessage.template.TemplateResolver;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -24,4 +26,10 @@ public class Util {
         sender.sendMessage(component);
     }
 
+    public static boolean isValidWorld(World world) {
+        if (world.getEnderDragonBattle() == null) return false;
+        if (Config.worldName.isBlank()) return true;
+
+        return world.getName().equalsIgnoreCase(Config.worldName);
+    }
 }
