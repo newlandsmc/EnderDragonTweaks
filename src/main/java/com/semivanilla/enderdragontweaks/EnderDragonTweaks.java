@@ -3,8 +3,11 @@ package com.semivanilla.enderdragontweaks;
 import com.semivanilla.enderdragontweaks.command.DragonTweaksCommand;
 import com.semivanilla.enderdragontweaks.config.Config;
 import com.semivanilla.enderdragontweaks.listener.EnderDragonListener;
+import com.semivanilla.enderdragontweaks.loot.LootItems;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class EnderDragonTweaks extends JavaPlugin {
 
@@ -14,6 +17,7 @@ public class EnderDragonTweaks extends JavaPlugin {
     public void onEnable() {
         instance = this;
         Config.init(instance);
+        LootItems.bootStrap(new File(this.getDataFolder(), "loot.yml"));
 
         registerListener(new EnderDragonListener(instance));
         getCommand("enderdragontweaks").setExecutor(new DragonTweaksCommand());

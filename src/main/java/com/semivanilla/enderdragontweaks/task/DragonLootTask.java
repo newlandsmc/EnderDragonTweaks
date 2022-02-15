@@ -1,6 +1,7 @@
 package com.semivanilla.enderdragontweaks.task;
 
 import com.semivanilla.enderdragontweaks.config.Config;
+import com.semivanilla.enderdragontweaks.loot.LootItems;
 import com.semivanilla.enderdragontweaks.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,18 +21,15 @@ import org.bukkit.loot.LootTable;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class DragonLootTask extends BukkitRunnable {
 
-	private JavaPlugin plugin;
-	private World world;
-	private int count;
+	private final JavaPlugin plugin;
+	private final World world;
+	private final int count;
 
     public DragonLootTask(JavaPlugin plugin, World world, int count) {
         this.plugin = plugin;
@@ -59,9 +57,7 @@ public class DragonLootTask extends BukkitRunnable {
 		int min = Math.min(count, Config.minPlayerCap);
 		int max = Math.min(count, Config.maxPlayerCap);
 		int drops = min == max ? min : threadLocalRandom.nextInt(min, max);
-		List<ItemStack> items = Config.dragonDrops;
-		Collections.shuffle(items);
-		items = items.stream().limit(drops).collect(Collectors.toList());
+		List<ItemStack> items = LootItems.generateLoot(drops);
 		for (ItemStack itemStack : items) {
 			double randI = threadLocalRandom.nextDouble(0, 26);
 			double randX = threadLocalRandom.nextDouble(Config.minX, Config.maxX);

@@ -19,6 +19,7 @@ dependencies {
     shadow("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT") { // Minimessage
         exclude("net.kyori", "adventure-api")
     }
+//    implementation("com.semivanilla.lootitems:LootItems:1.0-SNAPSHOT")
 }
 
 tasks {

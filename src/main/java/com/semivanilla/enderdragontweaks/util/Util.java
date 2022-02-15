@@ -12,12 +12,23 @@ import java.util.List;
 
 public class Util {
 
+    private static MiniMessage miniMessage;
+
+    private static MiniMessage miniMessage() {
+        if (miniMessage == null)
+            miniMessage = MiniMessage.miniMessage();
+        return miniMessage;
+    }
+
+    public static Component parseMiniMessage(String message) {
+        return miniMessage().deserialize(message);
+    }
+
     public static Component parseMiniMessage(String message, List<Template> templates) {
-        MiniMessage miniMessage = MiniMessage.miniMessage();
         if (templates == null) {
-            return miniMessage.deserialize(message);
+            return miniMessage().deserialize(message);
         } else {
-            return miniMessage.deserialize(message, TemplateResolver.templates(templates));
+            return miniMessage().deserialize(message, TemplateResolver.templates(templates));
         }
     }
 

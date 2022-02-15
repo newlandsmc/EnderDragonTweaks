@@ -2,10 +2,8 @@ package com.semivanilla.enderdragontweaks.config;
 
 import com.google.common.base.Throwables;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -13,7 +11,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -107,34 +104,6 @@ public class Config {
         return config.getString(path, config.getString(path));
     }
 
-    private static List<ItemStack> getItemStackList(String path, List<ItemStack> def) {
-        // Spigot doesn't have a decent implementation to load a list of these :shocker:
-        // using config.set(path, List<ItemStack>) then loading this in and casting it to <ItemStack> has an awkwardly high memory usage...
-        saveItemStackList(path, def); // add in our defaults
-
-        if (config.getConfigurationSection(path) == null) //
-            config.createSection(path);
-
-        List<ItemStack> items = new ArrayList<>();
-        for (String s : config.getConfigurationSection(path).getKeys(false)) {
-            ItemStack itemStack = config.getItemStack(path + "." + s);
-            items.add(itemStack);
-        }
-        return items;
-    }
-
-    public static void saveItemStackList(String path, List<ItemStack> def) {
-        for (int i = 0; i < def.size(); i++) {
-            config.addDefault(path + "." + i, def.get(i));
-        }
-    }
-
-    public static void addItemStack(ItemStack def) {
-        dragonDrops.add(def);
-        saveItemStackList("drops", dragonDrops);
-        saveConfig();
-    }
-
     protected static void log(Level level, String s) {
         Bukkit.getLogger().log(level, s);
     }
@@ -172,11 +141,6 @@ public class Config {
         maxY = getInt("lootdrops.max-y", maxY);
         minPlayerCap = getInt("lootdrops.min-player-count", minPlayerCap);
         maxPlayerCap = getInt("lootdrops.max-player-count", maxPlayerCap);
-    }
-
-    public static List<ItemStack> dragonDrops = List.of(new ItemStack(Material.DRAGON_EGG));
-    private static void itemSettings() {
-        dragonDrops = getItemStackList("drops", dragonDrops);
     }
 
 }
