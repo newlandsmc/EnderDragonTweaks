@@ -19,7 +19,24 @@ dependencies {
     shadow("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT") { // Minimessage
         exclude("net.kyori", "adventure-api")
     }
-//    implementation("com.semivanilla.lootitems:LootItems:1.0-SNAPSHOT")
+//    shadow("cat.inspiracio:rhino-js-engine:1.7.10") // Rhino
+    compileOnly("com.semivanilla.lootitems:LootItems:1.0-SNAPSHOT")
+}
+
+repositories {
+    mavenCentral()
+    maven { // Semi Vanilla
+        url = uri("https://sv.destro.xyz/snapshots/")
+    }
+    maven { // Paper
+        url = uri("https://papermc.io/repo/repository/maven-public/")
+    }
+//    maven { // Configurate
+//        url = uri("https://repo.spongepowered.org/maven")
+//    }
+    maven { // run paper plugin
+        url = uri("https://repo.jpenilla.xyz/snapshots/")
+    }
 }
 
 tasks {
@@ -48,7 +65,9 @@ tasks {
     shadowJar {
         dependsOn(getByName("relocateJars") as ConfigureShadowRelocation)
         archiveFileName.set("${project.name}-${project.version}.jar")
-        minimize()
+        minimize {
+            exclude(dependency("org.mozilla.javascript:.*:.*"))
+        }
         configurations = listOf(project.configurations.shadow.get())
     }
 

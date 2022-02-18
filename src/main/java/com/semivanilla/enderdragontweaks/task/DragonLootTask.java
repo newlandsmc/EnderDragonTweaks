@@ -1,29 +1,17 @@
 package com.semivanilla.enderdragontweaks.task;
 
 import com.semivanilla.enderdragontweaks.config.Config;
-import com.semivanilla.enderdragontweaks.loot.LootItems;
-import com.semivanilla.enderdragontweaks.util.Util;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
+import com.semivanilla.lootitems.LootItems;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
-import net.minecraft.world.level.dimension.end.EndDragonFight;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.DragonBattle;
-import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
-import org.bukkit.entity.EnderDragon;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.loot.LootContext;
-import org.bukkit.loot.LootTable;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class DragonLootTask extends BukkitRunnable {
 
@@ -55,7 +43,7 @@ public class DragonLootTask extends BukkitRunnable {
 
 		ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 		int min = Math.min(count, Config.minPlayerCap);
-		int max = Math.min(count, Config.maxPlayerCap);
+		int max = Math.min(Math.max(count, 5), Config.maxPlayerCap);
 		int drops = min == max ? min : threadLocalRandom.nextInt(min, max);
 		List<ItemStack> items = LootItems.generateLoot(drops);
 		for (ItemStack itemStack : items) {

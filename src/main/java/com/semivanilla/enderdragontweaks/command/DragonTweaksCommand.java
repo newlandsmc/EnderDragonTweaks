@@ -2,8 +2,7 @@ package com.semivanilla.enderdragontweaks.command;
 
 import com.semivanilla.enderdragontweaks.EnderDragonTweaks;
 import com.semivanilla.enderdragontweaks.config.Config;
-import com.semivanilla.enderdragontweaks.loot.LootItems;
-import net.kyori.adventure.text.minimessage.Template;
+import com.semivanilla.lootitems.LootItems;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class DragonTweaksCommand implements CommandExecutor, TabCompleter {
 
-    public static List<String> commands = List.of("Reload", "loot");
+    public static List<String> commands = List.of("Reload"/*, "loot"*/);
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -27,14 +26,14 @@ public class DragonTweaksCommand implements CommandExecutor, TabCompleter {
                 Config.init(EnderDragonTweaks.getInstance());
                 sender.sendMessage("Configuration reloaded.");
             }
-            case "loot" -> {
-                if (sender instanceof Player player) {
-                    List<ItemStack> items = LootItems.generateLoot(5);
-                    for (ItemStack itemStack : items) {
-                        player.getInventory().addItem(itemStack);
-                    }
-                }
-            }
+//            case "loot" -> {
+//                if (sender instanceof Player player) {
+//                    List<ItemStack> items = LootItems.generateLoot(5);
+//                    for (ItemStack itemStack : items) {
+//                        player.getInventory().addItem(itemStack);
+//                    }
+//                }
+//            }
         }
         return true;
     }
