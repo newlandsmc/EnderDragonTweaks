@@ -5,6 +5,7 @@ import com.semivanilla.enderdragontweaks.config.Config;
 import com.semivanilla.enderdragontweaks.task.DragonLootTask;
 import com.semivanilla.enderdragontweaks.task.DragonSpawnTask;
 import com.semivanilla.enderdragontweaks.util.Util;
+import io.papermc.paper.event.block.DragonEggFormEvent;
 import net.kyori.adventure.text.minimessage.Template;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,16 +55,6 @@ public class EnderDragonListener implements Listener {
     public void onEnderDragonDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof EnderDragon dragonEntity)) return;
         World world = dragonEntity.getWorld();
-        Block eggLocation = world.getBlockAt(0, 67, 0);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (eggLocation.getType() == Material.DRAGON_EGG) {
-                    eggLocation.setType(Material.AIR);
-                }
-            }
-
-        }.runTaskLater(instance, 201); //exactly 1 tick after the egg spawns. The client doesn't even see the block).
 
         DragonBattle dragonBattle = dragonEntity.getDragonBattle();
 
@@ -104,6 +95,10 @@ public class EnderDragonListener implements Listener {
 
         dragonLootTask = new DragonLootTask(instance, world, playerNames.size());
         dragonLootTask.startTask();
+    }
+    @EventHandler
+    public void onEggForm(DragonEggFormEvent event) {
+        event.setCancelled(true);
     }
 
     public void respawnDragon(World world) {
