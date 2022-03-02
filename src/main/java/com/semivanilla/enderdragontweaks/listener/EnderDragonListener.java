@@ -15,7 +15,9 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.boss.DragonBattle;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.EnderDragon;
@@ -25,8 +27,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EnderDragonListener implements Listener {
@@ -39,7 +44,7 @@ public class EnderDragonListener implements Listener {
         instance = plugin;
         dragonSpawnTask = null;
         for (World world : Bukkit.getWorlds()) {
-            if(!Util.isValidWorld(world)) continue;
+            if (!Util.isValidWorld(world)) continue;
             dragonSpawnTask = new DragonSpawnTask(plugin, world);
             dragonSpawnTask.startTask();
         }
@@ -49,10 +54,22 @@ public class EnderDragonListener implements Listener {
     public void onEnderDragonDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof EnderDragon dragonEntity)) return;
         World world = dragonEntity.getWorld();
+        Block eggLocation = world.getBlockAt(0, 67, 0);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (eggLocation.getType() == Material.DRAGON_EGG) {
+                    eggLocation.setType(Material.AIR);
+                }
+            }
+
+        }.runTaskLater(instance, 201); //exactly 1 tick after the egg spawns. The client doesn't even see the block).
+
         DragonBattle dragonBattle = dragonEntity.getDragonBattle();
+
         if (dragonBattle == null) return; // something went wrong.
 
-        if(!Util.isValidWorld(world)) return;
+        if (!Util.isValidWorld(world)) return;
         event.setDroppedExp(0); // always set the exp to 0
         if (Config.clearDragonDrops) event.getDrops().clear();
         respawnDragon(world);
@@ -66,12 +83,12 @@ public class EnderDragonListener implements Listener {
         Player player = dragonEntity.getKiller();
         if (player != null)
             playerNames.add(player.getName());
-        if(!serverPlayers.isEmpty()) {
+        if (!serverPlayers.isEmpty()) {
             int expPerPlayer = Config.expToSpread / serverPlayers.size();
             for (ServerPlayer serverPlayer : serverPlayers) {
                 serverPlayer.giveExperiencePoints(expPerPlayer);
                 BlockPos blockPos = serverPlayer.blockPosition();
-                for(Direction direction : Direction.Plane.HORIZONTAL) {
+                for (Direction direction : Direction.Plane.HORIZONTAL) {
                     BlockPos blockPos2 = blockPos.relative(direction, 1);
                     level.addFreshEntity(new ExperienceOrb(level, blockPos2.getX(), blockPos2.getY(), blockPos2.getZ(), 0));
                 }
